@@ -44,8 +44,8 @@ pipeline {
             steps {
                 script {
                     //dir('/var/lib/jenkins/workspace/') {
-                    //sh "rm -rf /var/lib/jenkins/workspace/nodejs-pipeline"
-                    sh "git clone https://github.com/anggakg/Portfolio-Web.git"
+                    sh "cd /var/lib/jenkins/workspace/nodejs-pipeline && git pull"
+                    //sh "git clone https://github.com/anggakg/Portfolio-Web.git"
                     //sh "sed -i '/  name: /s/.*/  name:/' /var/lib/jenkins/workspace/nodejs-pipeline/clusters/my-cluster/apps/${params.service-name}/deployment.yaml" //remove name deployment
                     //sh "awk '/name:/ {\$1=\$1; sub(\"name:\", \"  name: \${params.service-name}\")} 1' /var/lib/jenkins/workspace/nodejs-pipeline/clusters/my-cluster/apps/${params.service-name}/deployment.yaml > tmp && mv tmp deployment.yaml" //changenameservices
                     //sh "sed -i '/  image: /s/.*/  image:/' /var/lib/jenkins/workspace/nodejs-pipeline/clusters/my-cluster/apps/${params.service-name}/deployment.yaml" //remove taging image
