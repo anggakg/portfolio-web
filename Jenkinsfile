@@ -9,12 +9,10 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
-            steps {
-                checkout([$class: 'GitSCM',
-                    branches: [[name: "${params.Branch}"]],
-                    userRemoteConfigs: [[credentialsId: 'jenkins',
-                    url: "$repourl"]]])
+
+        stage("checkout"){
+            steps{
+                checkout scm
             }
         }
 
