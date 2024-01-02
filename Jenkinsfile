@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     environment {
         githubcred = credentials('jenkins')
         imagename = "anggakg/reactjs" // Ganti URL dan nama gambar sesuai dengan yang sesuai di GitLab Container Registry
