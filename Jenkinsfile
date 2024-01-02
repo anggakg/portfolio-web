@@ -9,10 +9,12 @@ pipeline {
     }
 
     stages {
-
-        stage("checkout"){
-            steps{
-                checkout scm
+        stage('Clone') {
+            steps {
+                checkout([$class: 'GitSCM',
+                    branches: [[name: "${params.Branch}"]],
+                    userRemoteConfigs: [[credentialsId: 'jenkins',
+                    url: "$repourl"]]])
             }
         }
 
@@ -20,6 +22,19 @@ pipeline {
             steps {
                 script {
                     docker.build("${imagename}:latest", ".")
+                }
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                script {
+                    echo 'Testing...'
+                        snykSecurity(
+                            snykInstallation: 'snyk',
+                            snykTokenId: 'angga-snyk-api-token',
+                            // place other parameters here
+                        )
                 }
             }
         }
@@ -35,20 +50,20 @@ pipeline {
                 }
             }
         }
-        stage('Update Repo Gitlab') {
-            steps {
-                script {
+        //stage('Update Repo Gitlab') {
+            //steps {
+                //script {
                     //sh "cd $repodir && git clone $repourl"
-                    sh "cd $repodir/portfolio-web/ && git checkout master"
-                    sh "cd $repodir/portfolio-web/ && git pull"
-                    sh "git config --global user.name 'JenkinsCI'"
-                    sh "git config --global user.email 'jenkins@admin.com'"
-                    sh "cd $repodir/portfolio-web/ && git add ."
-                    sh "cd $repodir/portfolio-web/ && git commit -m 'Update from JenkinsCI'"
-                    sh "cd $repodir/portfolio-web/ && git push"
-                }
-            }
-        }
+                    //sh "cd $repodir/portfolio-web/ && git checkout master"
+                    //sh "cd $repodir/portfolio-web/ && git pull"
+                    //sh "git config --global user.name 'JenkinsCI'"
+                    //sh "git config --global user.email 'jenkins@admin.com'"
+                    //sh "cd $repodir/portfolio-web/ && git add ."
+                    //sh "cd $repodir/portfolio-web/ && git commit -m 'Update from JenkinsCI'"
+                    //sh "cd $repodir/portfolio-web/ && git push"
+                //}
+            //}
+        //}
         stage('Clean Workspace') {
             steps {
                 cleanWs()
